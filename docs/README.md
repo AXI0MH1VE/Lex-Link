@@ -56,6 +56,18 @@ Release notes: **[See the latest release notes](RELEASE_NOTES.md)**
    - Floating-point drift, identity vulnerability, and economic implications
    - Project Aegis, Sovereign Attribution, and remediation
 
+8. **[Comprehensive Technical Diagnosis](TECHNICAL_DIAGNOSIS.md)** (Expanded)
+   - Complete treatment: from epistemic crisis through market implications
+   - Detailed analysis of RLHF Trap, Contradiction Cost, and Floating-Point Drift
+   - Crystalline Mesh architecture and Project Aegis defense layers
+   - Economic and regulatory implications of the deterministic shift
+
+9. **[Legal & Risk Assessment](LEGAL_RISK_ASSESSMENT.md)**
+   - Comparative liability analysis: Axiom Hive vs. Grok
+   - Regulatory alignment and verification capacity
+   - Risk matrix and architectural distinction
+   - Compliance-ready positioning for legal and enterprise review
+
 ### API Reference
 
 - **[Verification Portal API](../portal/openapi.yaml)**
