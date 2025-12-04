@@ -71,6 +71,9 @@ regex = "1.10"
 # UUID
 uuid = { version = "1.6", features = ["v4", "serde"] }
 
+# Verification crate for attestations and deterministic tooling
+verification = { path = "../verification" }
+
 [target.'cfg(target_os = "macos")'.dependencies]
 cocoa = "0.25"
 objc = "0.2"

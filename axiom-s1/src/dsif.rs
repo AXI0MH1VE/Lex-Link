@@ -15,6 +15,8 @@ use std::collections::HashMap;
 use uuid::Uuid;
 
 use crate::{PROJECTION, SUBSTRATE};
+use verification::Attestation;
+use verification::attestation::SignerRole;
 
 /// DSIF Agent - Represents a single agent in the swarm
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -155,6 +157,8 @@ pub struct DSIF {
     invariants: Vec<Invariant>,
     allowlist: Vec<String>,
     denylist: Vec<String>,
+    /// Human approver attestations collected for decisions
+    human_approvals: Vec<Attestation>,
 }
 
 /// Invariant - Safety property that must be preserved
@@ -202,6 +206,7 @@ impl DSIF {
             invariants: Vec::new(),
             allowlist: Vec::new(),
             denylist: Vec::new(),
+            human_approvals: Vec::new(),
         };
         
         // Initialize default agents
@@ -319,9 +324,17 @@ impl DSIF {
             return Err("Quorum not met - action blocked".to_string());
         }
         
-        // Phase 5: Controlled Actuation (if approved)
-        if quorum_met && action_type != ActionType::Critical {
-            // For critical actions, require explicit approval
+        // Phase 5: Controlled Actuation (requires human approval for non-read)
+        // Reads do not change state and are allowed to proceed without human attestation.
+        if action_type != ActionType::Read {
+            // Require an explicit human approver attestation for any Write/Config/Critical action
+            if !self.has_human_approval(&decision_id) {
+                return Err("Human approver attestation required before actuation".to_string());
+            }
+        }
+
+        // If we reach here and quorum is met, execute controlled actuation
+        if quorum_met {
             self.controlled_actuation(&action, &decision_id)?;
         }
         
@@ -712,6 +725,36 @@ impl DSIF {
         if !self.denylist.contains(&item) {
             self.denylist.push(item);
         }
+    }
+
+    /// Add a human approver attestation. The attestation's statement should
+    /// include the decision id in the form `approve:<decision_id>` to link it.
+    pub fn add_human_approval(&mut self, attestation: Attestation) -> Result<(), String> {
+        if attestation.role != SignerRole::Approver {
+            return Err("Attestation role is not Approver".to_string());
+        }
+
+        // Simple validation: require a statement that references approval
+        if attestation.statement.is_none() {
+            return Err("Approver attestation must include approval statement".to_string());
+        }
+
+        self.human_approvals.push(attestation);
+        Ok(())
+    }
+
+    /// Check whether a human approver attestation exists for the given decision id
+    fn has_human_approval(&self, decision_id: &str) -> bool {
+        let expect = format!("approve:{}", decision_id);
+        for att in &self.human_approvals {
+            if let Some(ref stmt) = att.statement {
+                if stmt == &expect {
+                    return true;
+                }
+            }
+        }
+
+        false
     }
     
     /// Get audit trail
