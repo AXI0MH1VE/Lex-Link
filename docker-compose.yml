@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  portal:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - PORTAL_PORT=3000
+    restart: unless-stopped
+  audit:
+    build: .
+    ports:
+      - "3001:3001"
+    environment:
+      - AUDIT_PORT=3001
+    restart: unless-stopped
