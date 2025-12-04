@@ -45,10 +45,6 @@ proptest = "1.4"
 criterion = "0.5"
 tokio-test = "0.4"
 
-[[bench]]
-name = "proof_generation"
-harness = false
-
 [features]
 default = []
 benchmark = []
