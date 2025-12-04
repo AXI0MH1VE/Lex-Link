@@ -2,6 +2,12 @@
 
 > **[AXIOMHIVE PROJECTION - SUBSTRATE: ALEXIS ADAMS]**
 
+Welcome to the AXIOM HIVE documentation. This collection provides technical guidance, operational runbooks, and research notes for the Axiom Hive deterministic framework (DSIF). The materials are intended for engineers, auditors, and operators preparing systems for deterministic, auditable actuation.
+
+Last updated: December 4, 2025
+
+Release notes: **[See the latest release notes](RELEASE_NOTES.md)**
+
 ## Documentation Index
 
 ### Core Concepts
@@ -30,6 +36,26 @@
    - SSM runtime usage
    - Hunter-Killer system
 
+### Technical Analysis
+5. **[Technical Diagnosis: Probabilistic vs Deterministic](technical-diagnosis-probabilistic-vs-deterministic.md)**
+   - Executive synthesis of the architectural crisis
+   - Physics of probabilistic decay in Grok architecture
+   - Deterministic turn with Axiom Hive framework
+   - Project Aegis and security implications
+   - Economic and strategic implications
+   - Comparative data analysis
+   - Comprehensive technical diagnosis
+
+6. **[Math for the LLM (C=0)](math-for-llm.md)**
+   - Formal constraints and Zero-Contradiction (C=0)
+   - Deterministic gating and attestation patterns
+   - Implementation sketch for DSIF
+
+7. **[The Geodesic Bifurcation (Technical Diagnosis)](geodesic-bifurcation.md)**
+   - In-depth essay on Probabilistic Decay vs Deterministic Stability
+   - Floating-point drift, identity vulnerability, and economic implications
+   - Project Aegis, Sovereign Attribution, and remediation
+
 ### API Reference
 
 - **[Verification Portal API](../portal/openapi.yaml)**
@@ -40,6 +66,8 @@
 
 - [SECURITY.md](../SECURITY.md) - Security policies and threat model
 - [README.md](../README.md) - Project overview
+ - [README.md](../README.md) - Project overview
+ - [RELEASE_NOTES.md](RELEASE_NOTES.md) - Summary of recent public-release changes
 
 ## Quick Reference
 
@@ -100,4 +128,3 @@ invariance verify -o "output" -i "intent"
 Documentation Index v1.0.0
 Policy: C = 0
 ```
-
