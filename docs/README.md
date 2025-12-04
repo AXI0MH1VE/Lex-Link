@@ -68,6 +68,12 @@ Release notes: **[See the latest release notes](RELEASE_NOTES.md)**
    - Risk matrix and architectural distinction
    - Compliance-ready positioning for legal and enterprise review
 
+10. **[Monetizing Certainty (Proof-as-a-Service)](MONETIZING_CERTAINTY.md)**
+   - Proof-as-a-Service pricing model (per-proof receipts)
+   - Lightning microtransactions and receipt settlement
+   - Liability, HIL state machine, and deterministic financial modeling
+   - Example per-proof transaction flow and auditability
+
 ### API Reference
 
 - **[Verification Portal API](../portal/openapi.yaml)**

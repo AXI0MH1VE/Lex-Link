@@ -11,6 +11,7 @@ This release prepares the AXIOM HIVE documentation and key runtime safeguards fo
 - Added long-form technical diagnosis: **The Geodesic Bifurcation** — `docs/geodesic-bifurcation.md`
 - Implemented a human-in-the-loop gating mechanism in the DSIF runtime to require an approver attestation for any non-read/state-changing action (code in `axiom-s1/src/dsif.rs`).
 - Fixed several workspace build issues (missing `hex` dependency in some crates and minor type cleanups) so the repository builds successfully under a development profile.
+- Added monetization model: **Proof-as-a-Service** with per-proof receipts and Lightning microtransaction settlement — `docs/MONETIZING_CERTAINTY.md`
 
 ## Why this matters
 
