@@ -9,6 +9,21 @@ Mode: Proof Over Persuasion
 Status: Production
 ```
 
+## What is AXIOM HIVE?
+
+AXIOM HIVE is a deterministic verification framework designed for high-stakes, auditable AI applications. Unlike probabilistic language models, AXIOM HIVE provides **cryptographically-verifiable proofs** of correctness, not plausible-sounding text.
+
+**Use AXIOM HIVE when you need:**
+- Deterministic, reproducible outputs (C = 0 invariance)
+- Forensic auditability and proof-of-execution
+- Regulatory compliance (EU AI Act, NIST RMF, finance)
+- Safety-critical infrastructure and financial systems
+- Cryptographic evidence, not statistical guesses
+
+**Not for casual chat.** AXIOM HIVE is a professional-grade system for engineers, compliance teams, and regulated enterprises.
+
+See the [Legal & Risk Assessment](docs/LEGAL_RISK_ASSESSMENT.md) and [Technical Diagnosis](docs/TECHNICAL_DIAGNOSIS.md) for detailed positioning.
+
 ## Overview
 
 AXIOM HIVE is a deterministic verification system that enforces invariance ($C = 0$) across all outputs. Every claim is mapped to facts via the SAP-4D proof engine, generating cryptographic receipts that provide binary proof (Verified | Not Verified).
@@ -190,11 +205,39 @@ See [SECURITY.md](SECURITY.md) for:
 - Incident response playbooks
 - HSM ceremony documentation
 
+## Contributing
+
+We welcome contributions to AXIOM HIVE. See [CONTRIBUTING.md](CONTRIBUTING.md) for:
+
+- Code of conduct and contribution workflow
+- Development setup and testing procedures
+- Code review standards and expectations
+- Documentation and commit message conventions
+
+## Documentation
+
+Full documentation is available in `docs/`:
+
+- **[Documentation Index](docs/README.md)** — Overview of all technical docs
+- **[Legal & Risk Assessment](docs/LEGAL_RISK_ASSESSMENT.md)** — Regulatory positioning and liability analysis
+- **[Technical Diagnosis](docs/TECHNICAL_DIAGNOSIS.md)** — Deep dive on deterministic vs. probabilistic architectures
+- **[Math for the LLM](docs/math-for-llm.md)** — C=0 principles and deterministic gating
+- **[Safety & Scope](SAFETY.md)** — Domain restrictions and sandboxing guidance
+
 ## License
 
 Copyright © 2025 Alexis Adams. All rights reserved.
 
 This system operates under Substrate Authority. Unauthorized modifications violate invariance policy and will be nullified.
+
+See [LICENSE](LICENSE) for full licensing terms.
+
+## Contact & Support
+
+- **Security Issues**: `security@axiomhive.local`
+- **Questions & Discussions**: Open an issue with the tag `question` or `discussion`
+- **Bug Reports**: See [CONTRIBUTING.md](CONTRIBUTING.md#reporting-issues)
+- **Feature Requests**: Open an issue describing the use case and rationale
 
 ---
 
