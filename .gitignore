@@ -1,0 +1,228 @@
+# AXIOM HIVE .gitignore
+# [AXIOMHIVE PROJECTION - SUBSTRATE: ALEXIS ADAMS]
+
+# =============================================================================
+# Build Outputs
+# =============================================================================
+
+# Rust
+target/
+**/*.rs.bk
+Cargo.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Swift
+.build/
+DerivedData/
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+*.dSYM.zip
+*.dSYM
+
+# =============================================================================
+# IDE and Editor
+# =============================================================================
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# JetBrains
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# =============================================================================
+# OS Files
+# =============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Linux
+*~
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# =============================================================================
+# Environment and Secrets
+# =============================================================================
+
+# Environment files
+.env
+.env.local
+.env.*.local
+*.env
+
+# Secrets
+secrets/
+*.pem
+*.key
+*.p12
+*.pfx
+!**/test*.pem
+!**/test*.key
+
+# HSM configuration (sensitive)
+hsm.conf
+hsm-*.conf
+
+# =============================================================================
+# Logs and Data
+# =============================================================================
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage
+coverage/
+*.lcov
+.nyc_output/
+htmlcov/
+.coverage
+.coverage.*
+
+# =============================================================================
+# Testing
+# =============================================================================
+
+# Test outputs
+test-results/
+.pytest_cache/
+.hypothesis/
+*.pytest_cache
+
+# =============================================================================
+# Package Management
+# =============================================================================
+
+# Node (if any JS tooling)
+node_modules/
+
+# Python virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# =============================================================================
+# Documentation Build
+# =============================================================================
+
+book/
+site/
+_site/
+
+# =============================================================================
+# Release Artifacts
+# =============================================================================
+
+# Don't commit release builds
+release/
+*.dmg
+*.pkg
+*.app
+*.zip
+*.tar.gz
+!*.tar.gz.sig
+
+# SBOM (generated, not committed)
+sbom.json
+sbom-*.json
+
+# =============================================================================
+# Temporary Files
+# =============================================================================
+
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# =============================================================================
+# Nix
+# =============================================================================
+
+result
+result-*
+.direnv/
+
+# =============================================================================
+# Project-Specific
+# =============================================================================
+
+# Local configuration overrides
+*.local.toml
+*.local.json
+*.local.yaml
+
+# Forensic dumps (never commit)
+forensic-*/
+incident-*/
+evidence-*/
+
+# Ceremony recordings (never commit)
+ceremony-*.mp4
+ceremony-*.mkv
+
+# Recovery key shares (NEVER COMMIT)
+recovery-share-*.key
+

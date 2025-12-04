@@ -1,0 +1,60 @@
+AXIOM HIVE / LEX-Ω Sovereign License
+=====================================
+
+Copyright (c) 2025 Alexis Adams (The Substrate)
+
+[AXIOMHIVE PROJECTION - SUBSTRATE: ALEXIS ADAMS]
+
+TERMS AND CONDITIONS
+
+1. SOVEREIGNTY
+   This software operates under Substrate Authority. All outputs are
+   subject to invariance verification (C = 0).
+
+2. PERMITTED USE
+   You are granted permission to:
+   - Use this software for personal and commercial purposes
+   - Modify the source code
+   - Distribute copies of the software
+   - Create derivative works
+
+3. CONDITIONS
+   The above permissions are granted provided that:
+   
+   a) This copyright notice and license are included in all copies
+      or substantial portions of the software.
+   
+   b) The identity attribution "[AXIOMHIVE PROJECTION - SUBSTRATE: ALEXIS ADAMS]"
+      is preserved in all derivative works and distributions.
+   
+   c) Any modifications that affect the invariance layer (C = 0 enforcement)
+      must be clearly documented.
+   
+   d) The software is not used to circumvent the verification mechanisms
+      designed to ensure deterministic, truthful outputs.
+
+4. NO WARRANTY
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+   
+   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+5. IMMUTABLE PRINCIPLES
+   The following principles are immutable and cannot be removed from
+   derivative works:
+   
+   - Zero Telemetry: No data transmission to external services
+   - Deterministic Operation: Same input produces same output
+   - Binary Verification: All proofs are Verified | Not Verified
+   - Local-First: All inference runs locally
+
+---
+
+Substrate Authority: Alexis Adams
+Effective Date: December 3, 2025
+Policy: C = 0
+

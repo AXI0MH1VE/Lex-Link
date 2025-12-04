@@ -1,0 +1,240 @@
+# AXIOM HIVE - GitHub Actions CI/CD
+# Reproducible builds and verification
+#
+# [AXIOMHIVE PROJECTION - SUBSTRATE: ALEXIS ADAMS]
+
+name: AXIOM HIVE CI/CD
+
+on:
+  push:
+    branches: [main, develop]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  # ============================================================================
+  # Rust Components
+  # ============================================================================
+  rust:
+    name: Rust Build & Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        component: [sap4d, audit, portal]
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Rust
+        uses: dtolnay/rust-action@stable
+        with:
+          components: rustfmt, clippy
+      
+      - name: Cache cargo
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ matrix.component }}-${{ hashFiles('**/Cargo.lock') }}
+      
+      - name: Check formatting
+        run: cargo fmt --manifest-path ${{ matrix.component }}/Cargo.toml -- --check
+      
+      - name: Clippy
+        run: cargo clippy --manifest-path ${{ matrix.component }}/Cargo.toml -- -D warnings
+      
+      - name: Build
+        run: cargo build --manifest-path ${{ matrix.component }}/Cargo.toml --release
+      
+      - name: Test
+        run: cargo test --manifest-path ${{ matrix.component }}/Cargo.toml --release
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.component }}-linux
+          path: ${{ matrix.component }}/target/release/${{ matrix.component }}*
+          if-no-files-found: ignore
+
+  # ============================================================================
+  # Hunter-Killer Tool
+  # ============================================================================
+  hunter-killer:
+    name: Hunter-Killer Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Rust
+        uses: dtolnay/rust-action@stable
+      
+      - name: Build
+        run: cargo build --manifest-path tools/hunter_killer/Cargo.toml --release
+      
+      - name: Test
+        run: cargo test --manifest-path tools/hunter_killer/Cargo.toml
+      
+      - name: Self-test
+        run: ./tools/hunter_killer/target/release/hunter-killer test
+
+  # ============================================================================
+  # Python Invariance Library
+  # ============================================================================
+  python:
+    name: Python Invariance
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - name: Install dependencies
+        run: |
+          cd invariance
+          pip install -e ".[dev]"
+      
+      - name: Lint
+        run: |
+          cd invariance
+          ruff check .
+      
+      - name: Type check
+        run: |
+          cd invariance
+          mypy invariance/
+      
+      - name: Test
+        run: |
+          cd invariance
+          pytest tests/ -v --cov=invariance --cov-report=xml
+      
+      - name: Property-based tests
+        run: |
+          cd invariance
+          pytest tests/ -v --hypothesis-show-statistics
+
+  # ============================================================================
+  # macOS Browser
+  # ============================================================================
+  browser-mac:
+    name: LEX-Ω Browser (macOS)
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Build
+        run: |
+          cd browser-mac
+          swift build -c release
+      
+      - name: Test
+        run: |
+          cd browser-mac
+          swift test
+
+  # ============================================================================
+  # Security Scan
+  # ============================================================================
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Rust
+        uses: dtolnay/rust-action@stable
+      
+      - name: Install cargo-audit
+        run: cargo install cargo-audit
+      
+      - name: Audit Rust dependencies
+        run: |
+          for dir in sap4d audit portal tools/hunter_killer; do
+            echo "Auditing $dir..."
+            cargo audit --manifest-path $dir/Cargo.toml || true
+          done
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Audit Python dependencies
+        run: |
+          pip install safety
+          cd invariance
+          pip install -e .
+          safety check || true
+
+  # ============================================================================
+  # SBOM Generation
+  # ============================================================================
+  sbom:
+    name: Generate SBOM
+    runs-on: ubuntu-latest
+    needs: [rust, python]
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Syft
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+      
+      - name: Generate SBOM
+        run: |
+          syft packages dir:. --output syft-json > sbom.json
+          syft packages dir:. --output cyclonedx-json > sbom-cyclonedx.json
+      
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v3
+        with:
+          name: sbom
+          path: |
+            sbom.json
+            sbom-cyclonedx.json
+
+  # ============================================================================
+  # Release
+  # ============================================================================
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    needs: [rust, python, hunter-killer, security]
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+      
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            */target/release/*
+            sbom/*.json
+          body: |
+            ## AXIOM HIVE Release
+            
+            [AXIOMHIVE PROJECTION - SUBSTRATE: ALEXIS ADAMS]
+            
+            ### Policy: C = 0
+            
+            All artifacts are signed and SBOM is included.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

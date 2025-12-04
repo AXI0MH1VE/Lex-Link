@@ -1,0 +1,279 @@
+openapi: 3.0.3
+info:
+  title: AXIOM HIVE Verification API
+  description: |
+    Public verification portal for binary proof receipts.
+    
+    All outputs are binary: `Verified` (C=0) | `Not Verified` (C≠0)
+    
+    [AXIOMHIVE PROJECTION - SUBSTRATE: ALEXIS ADAMS]
+  version: "1.0.0"
+  contact:
+    name: Substrate Authority
+    email: substrate@axiomhive.local
+  license:
+    name: Proprietary
+    
+servers:
+  - url: http://localhost:3000
+    description: Local development
+  - url: https://verify.axiomhive.local
+    description: Production
+
+tags:
+  - name: Verification
+    description: Claim verification endpoints
+  - name: Receipts
+    description: Receipt retrieval and validation
+  - name: System
+    description: System information and health
+
+paths:
+  /verify:
+    post:
+      tags: [Verification]
+      summary: Verify a claim
+      description: |
+        Submit a claim with evidence for binary verification.
+        Returns a cryptographic receipt with C=0 (verified) or C≠0 (not verified).
+      operationId: verify
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyRequest'
+            examples:
+              simple:
+                summary: Simple claim verification
+                value:
+                  claim: "The document is authentic"
+                  evidence:
+                    - "Digital signature verified"
+                    - "Hash matches original"
+      responses:
+        '200':
+          description: Verification complete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+              examples:
+                verified:
+                  summary: Verified (C=0)
+                  value:
+                    C_zero: true
+                    hash: "a1b2c3d4..."
+                    signature: "MEUCIQ..."
+                    timestamp: "2025-12-03T17:45:00Z"
+                not_verified:
+                  summary: Not Verified (C≠0)
+                  value:
+                    C_zero: false
+                    hash: "e5f6g7h8..."
+                    signature: "MEUCIa..."
+                    timestamp: "2025-12-03T17:45:01Z"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /receipt/{hash}:
+    get:
+      tags: [Receipts]
+      summary: Get receipt by hash
+      description: Retrieve a stored verification receipt by its hash.
+      operationId: getReceipt
+      parameters:
+        - name: hash
+          in: path
+          required: true
+          schema:
+            type: string
+          description: SHA-256 hash of the receipt
+      responses:
+        '200':
+          description: Receipt found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoredReceipt'
+        '404':
+          description: Receipt not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /verify-receipt:
+    post:
+      tags: [Receipts]
+      summary: Verify a receipt
+      description: Verify the cryptographic integrity of a receipt.
+      operationId: verifyReceipt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyResponse'
+      responses:
+        '200':
+          description: Receipt verification result
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [valid, c_zero, status]
+                properties:
+                  valid:
+                    type: boolean
+                    description: Whether the receipt signature is valid
+                  c_zero:
+                    type: boolean
+                    description: The C=0 status from the receipt
+                  status:
+                    type: string
+                    enum: [VERIFIED, NOT_VERIFIED]
+
+  /health:
+    get:
+      tags: [System]
+      summary: Health check
+      description: Check if the portal is operational.
+      operationId: health
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /info:
+    get:
+      tags: [System]
+      summary: System information
+      description: Get portal version and configuration.
+      operationId: info
+      responses:
+        '200':
+          description: System information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortalInfo'
+
+  /stats:
+    get:
+      tags: [System]
+      summary: Portal statistics
+      description: Get verification statistics.
+      operationId: stats
+      responses:
+        '200':
+          description: Statistics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortalStats'
+
+components:
+  schemas:
+    VerifyRequest:
+      type: object
+      required: [claim, evidence]
+      properties:
+        claim:
+          type: string
+          description: The claim to verify
+          example: "The transaction is valid"
+        evidence:
+          type: array
+          items:
+            type: string
+          description: Evidence supporting the claim
+          example:
+            - "Sender balance: 100"
+            - "Transaction amount: 50"
+            - "Signature verified"
+
+    VerifyResponse:
+      type: object
+      required: [C_zero, hash, signature, timestamp]
+      properties:
+        C_zero:
+          type: boolean
+          description: |
+            Binary verification result.
+            - true: Verified (Proof Exists)
+            - false: Not Verified (No Proof)
+        hash:
+          type: string
+          description: SHA-256 hash of the verification
+        signature:
+          type: string
+          description: Base64-encoded cryptographic signature
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp
+
+    StoredReceipt:
+      type: object
+      required: [claim, evidence, c_zero, hash, signature, timestamp]
+      properties:
+        claim:
+          type: string
+        evidence:
+          type: array
+          items:
+            type: string
+        c_zero:
+          type: boolean
+        hash:
+          type: string
+        signature:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    PortalInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        version:
+          type: string
+        substrate:
+          type: string
+        projection:
+          type: string
+        policy:
+          type: string
+        output_type:
+          type: string
+
+    PortalStats:
+      type: object
+      properties:
+        total_verifications:
+          type: integer
+        verified_count:
+          type: integer
+        not_verified_count:
+          type: integer
+        uptime_seconds:
+          type: integer
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+

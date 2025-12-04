@@ -1,0 +1,78 @@
+# AXIOM HIVE Git Attributes
+# [AXIOMHIVE PROJECTION - SUBSTRATE: ALEXIS ADAMS]
+
+# Auto detect text files
+* text=auto
+
+# Rust
+*.rs text eol=lf
+Cargo.toml text eol=lf
+Cargo.lock text eol=lf -diff
+
+# Python
+*.py text eol=lf
+*.pyi text eol=lf
+
+# Swift
+*.swift text eol=lf
+
+# C
+*.c text eol=lf
+*.h text eol=lf
+
+# Web
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.jsx text eol=lf
+*.json text eol=lf
+
+# Config
+*.toml text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.xml text eol=lf
+*.nix text eol=lf
+
+# Documentation
+*.md text eol=lf
+*.txt text eol=lf
+LICENSE text eol=lf
+
+# Shell
+*.sh text eol=lf
+
+# Makefiles
+Makefile text eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.icns binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+
+# Archives
+*.zip binary
+*.tar binary
+*.gz binary
+*.dmg binary
+
+# Compiled
+*.wasm binary
+*.so binary
+*.dylib binary
+*.dll binary
+*.a binary
+
+# Linguist overrides
+*.md linguist-documentation
+docs/* linguist-documentation
+

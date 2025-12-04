@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axiomhive.local/schemas/receipt.json",
+  "title": "AxiomHiveReceipt",
+  "description": "Cryptographic proof receipt from AXIOM HIVE verification system",
+  "type": "object",
+  "required": [
+    "claim",
+    "evidence",
+    "causal_chain",
+    "axioms",
+    "C_zero",
+    "hash",
+    "signature",
+    "timestamp"
+  ],
+  "properties": {
+    "claim": {
+      "type": "string",
+      "description": "The claim that was verified",
+      "minLength": 1
+    },
+    "evidence": {
+      "type": "array",
+      "description": "Evidence supporting the claim",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "causal_chain": {
+      "type": "array",
+      "description": "Causal chain from evidence to claim",
+      "items": {
+        "type": "string"
+      }
+    },
+    "axioms": {
+      "type": "array",
+      "description": "Axioms applied during verification",
+      "items": {
+        "type": "string",
+        "pattern": "^A[0-9]+_[A-Z_]+$"
+      }
+    },
+    "C_zero": {
+      "type": "boolean",
+      "description": "True if C=0 (no contradictions), False otherwise"
+    },
+    "hash": {
+      "type": "string",
+      "description": "SHA-256 hash of receipt contents",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "signature": {
+      "type": "string",
+      "description": "Base64-encoded DER signature from Substrate key"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of receipt generation"
+    },
+    "substrate": {
+      "type": "string",
+      "const": "Alexis Adams",
+      "description": "Substrate authority identifier"
+    },
+    "projection": {
+      "type": "string",
+      "const": "AXIOMHIVE PROJECTION",
+      "description": "Projection identifier"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "IdentityTag": {
+      "type": "object",
+      "required": [
+        "projection",
+        "substrate",
+        "timestamp",
+        "output_hash",
+        "signature"
+      ],
+      "properties": {
+        "projection": {
+          "type": "string",
+          "const": "AXIOMHIVE PROJECTION"
+        },
+        "substrate": {
+          "type": "string",
+          "const": "Alexis Adams"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "output_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "signature": {
+          "type": "string"
+        }
+      }
+    },
+    "NullificationNotice": {
+      "type": "object",
+      "required": [
+        "status",
+        "violation",
+        "action",
+        "timestamp"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "const": "NULLIFIED"
+        },
+        "violation": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string",
+          "const": "FREEZE_AND_REPORT"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}
+
