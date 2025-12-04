@@ -1,59 +1,62 @@
 # Monetizing Certainty (Proof-as-a-Service)
 
-## Summary
+## Overview
 
-Monetize determinism by pricing the *proof*, not unpredictable compute time or open access. Proof-as-a-Service (PaaS) charges per verified inference: users pay for a cryptographic receipt that certifies an output, its inputs, environment, and deterministic execution trace.
+Proof-as-a-Service replaces subscription pricing with per-verified-inference billing: customers pay for the cryptographic receipt and deterministic signature that *certifies* an output, not for time or compute.
 
-## Pricing Model
+Lightning Network micropayments (e.g., ~1,000 satoshis per receipt) enable instant, low-fee settlement aligned to the value of the guarantee. Pricing is tied to the strength of the guarantee (receipt complexity, ZK depth, SLA), not to raw usage time.
 
-- **Per-proof billing**: each verified inference emits a cryptographic receipt; billing is attached to the receipt rather than a time-based subscription.
-- **Microtransactions (Lightning)**: low-friction micropayments (e.g., ~1,000 satoshis) settle instantly for each receipt. Settlement can be on-chain or via off-ledger settlement rails.
-- **Value-aligned pricing**: price is a function of guarantee strength (ZK/receipt complexity, audit depth, SLA). Stronger guarantees → higher price.
-- **Economic leverage**: organizations report a TCO advantage (example: USD 2,600,000) when shifting to deterministic, auditable inference in high-risk deployments; competitive pricing for proofs undermines probabilistic incumbents while signalling architectural rigor.
+Company-reported economics: Axiom Hive claims a TCO advantage (example figure: USD 2,600,000) versus probabilistic competitors for high-risk deployments; per-proof pricing undercuts incumbents while signaling architectural rigor.
 
 ## Liability & Accountability
 
-- **Nontransferable liability**: every proof includes an attributable identity and a signature tied to the host substrate and operator principal. "Meme liability" (anonymous, ownerless output) is eliminated.
-- **Receipt as legal artifact**: receipts provide a verifiable chain-of-custody and can be used in audits, compliance reports, and contractual enforcement.
+- **Meme liability is nontransferable.** Each proof includes an attributable identity and a signature bound to the host substrate and operator principal. There is no ownerless, autonomous artifact.
+- **Receipts as legal artifacts.** Receipts form a verifiable chain-of-custody suitable for audits, compliance, and contractual enforcement.
 
-## Human‑in‑the‑Loop State Machine (Failure by Default)
+## Human‑In‑The‑Loop State Machine (Failure by Default)
 
-- **No implicit proceed**: actions that change state must be accompanied by an approver signature within a configured timeout.
-- **Fail-closed behavior**: absence of approval → automatic rollback to a safe state and alerting of operators.
-- **Operational ergonomics**: eliminates risky "3 AM deploys" — if the human substrate is unavailable, the engine halts instead of guessing.
+- **Explicit approval required.** Any state-changing action requires a final approver signature within a configured timeout.
+- **Fail-closed and rollback.** Missing approval triggers automatic rollback to a safe state and alerts operators — no implicit proceed.
+- **Operational benefit.** Removes risky late-night deployments: if the human substrate is unavailable, the system halts instead of guessing.
 
-## Deterministic Financial Modeling
+## Deterministic Financial Modeling (Early Insolvency Detection)
 
-- **Physics-based control**: use variational/Lagrangian formulations for constrained optimization (profit subject to safety/regulatory invariants).
-- **Pre-failure signals**: penalties (soft or hard) escalate as the system approaches regulatory or safety boundaries, producing visible dynamic signals of insolvency risk before balance-sheet failures.
-- **Predictable exposure**: deterministic models produce traceable failure modes, enabling earlier remediation and capital planning.
+- **Physics-informed optimization.** Use Lagrangian/variational formulations to maximize objectives (profit) under regulatory and safety invariants.
+- **Escalating penalties as signal.** As trajectories approach regulatory boundaries, penalty terms escalate (e.g., exponentially), producing early-warning dynamics that show structural failure long before balance-sheet insolvency.
+- **Predictable exposure.** Deterministic models yield traceable failure modes and enable proactive remediation and capital planning.
 
-## Regulatory Convergence
+## Regulatory Convergence (Aviation as Bellwether)
 
-- Aviation and safety-critical standards (DO-178C, ARP 4754A/4761, EASA initiatives) emphasize deterministic traceability and explainability.
-- Deterministic receipts and verifiable execution align with high-risk AI requirements (e.g., EU AI Act Article 50) and make integration into certified domains feasible.
+- Aviation and safety-critical standards (DO‑178C, ARP4754A/B, ARP4761A) demand deterministic, auditable behavior.
+- EASA and FAA roadmaps emphasize traceability and human-centric assurance for AI in operational systems (EASA AI Roadmap 2.0, FAA AI Safety Assurance Roadmap).
+- The EU AI Act (Article 50) and related enforcement timelines (enterprise compliance planning through mid‑2026) create a regulatory environment where deterministic receipts and verifiable execution are direct compliance enablers.
 
-## Wealth Management & Personalization
+## Wealth Management Tie‑In (Advanced Personalization)
 
-- **Verifiable personalization**: per-decision receipts enable clients and auditors to verify why a portfolio action was taken and who authorized it.
-- **Regulator-ready audit trails**: receipts enable compliance with fiduciary and suitability obligations while enabling advanced personalization at scale.
+- **Per-decision transparency.** Deterministic receipts provide replayable proofs that explain why a portfolio action was taken and who authorized it.
+- **Regulator-ready personalization.** Verifiable decision trails support fiduciary and suitability obligations while enabling large-scale, explainable personalization.
 
-## Example Transaction Flow (per‑proof)
+## Example Per‑Proof Transaction Flow
 
-1. Input registered as axioms and sanity-checked
-2. Invariant checks executed against inputs and context
-3. Deterministic execution in sandboxed runtime
-4. Cryptographic receipt (ZK or succinct artifact) generated and signed
-5. Lightning invoice issued for the receipt (example: 1,000 sats)
-6. Payment settles; ledger records identity + hash chain
-7. Auditor replays the deterministic execution and verifies the receipt
+1. Input is registered as axioms and sanity-checked.
+2. Invariant checks are executed against inputs and context.
+3. Deterministic execution runs in a sandboxed runtime (fixed seeds, reproducible layout).
+4. A ZK/succinct cryptographic receipt is produced and signed.
+5. A Lightning invoice is issued for the receipt (example: ~1,000 sats).
+6. Payment settles instantly; the ledger records identity + hash chain.
+7. An auditor replays the deterministic execution and verifies the receipt end-to-end.
+
+## Scope, Risks, and Guarantees
+
+- The claim of "mathematically impossible harm" is scoped to computation *inside* the deterministic control layer: if inputs satisfy declared axioms and constraints, the engine cannot produce outputs that violate verified invariants.
+- External risks (faulty sensors, corrupt data, human misuse) persist; they are mitigated via halt-on-violation, identity, and replayable proofs, not eliminated by math.
 
 ## Bottom Line
 
-- Certainty is monetized by pricing the proof itself, not access.
-- Halt-on-violation semantics + human approval gates + physics-backed modeling convert risk into deterministic signals.
-- The approach fits safety-critical standards and enables new business models (proof-based billing) that directly align cost to the value of verifiable outputs.
+- Certainty is monetized by selling the proof itself via instant micropayments.
+- Halt-on-violation gates, mandatory human approval, and physics-backed modeling convert risk management into deterministic control signals.
+- The approach dovetails with aviation and safety-critical standards and with EU AI Act transparency mandates, enabling regulator-ready, explainable personalization and verifiable outputs at the point of decision.
 
 ---
 
-*For productization: consider API-level receipts, tiered audit depths (quick vs. deep proofs), and optional on-chain attestation anchors for high-assurance clients.*
+*Notes for productization: define API-level receipt formats, tiered audit depths (quick vs. deep proofs), optional on-chain attestation anchors, and integration points for Lightning settlement.*
