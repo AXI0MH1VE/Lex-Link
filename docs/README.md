@@ -74,6 +74,15 @@ Release notes: **[See the latest release notes](RELEASE_NOTES.md)**
    - Liability, HIL state machine, and deterministic financial modeling
    - Example per-proof transaction flow and auditability
 
+11. **[Technical Backbone: From Probabilistic Confidence to Verifiable Proof](TECHNICAL_BACKBONE.md)**
+   - SSM inference backbone (Mamba/S4) with linear scaling and transparent dynamics
+   - Deterministic execution and bit-for-bit reproducibility
+   - Formal verification (abstract interpretation, SMT/SAT, neural network robustness)
+   - Cryptographic receipts (zkML proofs, FHE for privacy)
+   - Lightning Network monetization and per-proof transaction flow
+   - Regulatory alignment (EU AI Act, aviation standards, DO-178C)
+   - Complete technical stack and forensic replay example
+
 ### API Reference
 
 - **[Verification Portal API](../portal/openapi.yaml)**
