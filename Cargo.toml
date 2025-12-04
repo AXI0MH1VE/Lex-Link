@@ -7,6 +7,7 @@ members = [
     "audit",
     "portal",
     "tools/hunter_killer",
+    "verification",
 ]
 resolver = "2"
 

@@ -9,6 +9,7 @@
 
 mod bark;
 mod cozo_db;
+mod dsif;
 mod hunter_killer;
 mod inference;
 mod invariance;
@@ -16,6 +17,7 @@ mod sandbox;
 mod scout;
 mod sovereign_loop;
 
+use std::sync::Mutex;
 use tauri::Manager;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
@@ -31,6 +33,7 @@ pub struct AppState {
     pub db: cozo_db::CozoStore,
     pub bark: bark::BarkController,
     pub hunter_killer: hunter_killer::HunterKiller,
+    pub dsif: Mutex<dsif::DSIF>,
 }
 
 fn main() {
@@ -67,8 +70,11 @@ fn main() {
             // Initialize Hunter-Killer
             let hunter_killer = hunter_killer::HunterKiller::new();
             
+            // Initialize DSIF with 67% quorum threshold
+            let dsif = Mutex::new(dsif::DSIF::new(0.67));
+            
             // Store state
-            app.manage(AppState { db, bark, hunter_killer });
+            app.manage(AppState { db, bark, hunter_killer, dsif });
             
             tracing::info!("Axiom S1 ready. Policy: C = 0");
             Ok(())
@@ -103,6 +109,14 @@ fn main() {
             // System commands
             cmd_get_info,
             cmd_generate_receipt,
+            
+            // DSIF commands
+            cmd_dsif_execute_pipeline,
+            cmd_dsif_get_audit_trail,
+            cmd_dsif_get_agents,
+            cmd_dsif_add_invariant,
+            cmd_dsif_add_to_allowlist,
+            cmd_dsif_add_to_denylist,
         ])
         .run(tauri::generate_context!())
         .expect("Error running Axiom S1");
@@ -257,5 +271,115 @@ fn cmd_generate_receipt(
     evidence: Vec<String>,
 ) -> serde_json::Value {
     invariance::generate_receipt(&claim, &evidence)
+}
+
+// =============================================================================
+// DSIF COMMANDS
+// =============================================================================
+
+/// Execute DSIF pipeline
+#[tauri::command]
+async fn cmd_dsif_execute_pipeline(
+    state: tauri::State<'_, AppState>,
+    input: String,
+    action_type: String,
+    target: String,
+    parameters: serde_json::Value,
+) -> Result<serde_json::Value, String> {
+    use std::collections::HashMap;
+    
+    let action_type_enum = match action_type.as_str() {
+        "Read" => dsif::ActionType::Read,
+        "Write" => dsif::ActionType::Write,
+        "Critical" => dsif::ActionType::Critical,
+        "Config" => dsif::ActionType::Config,
+        _ => return Err("Invalid action type".to_string()),
+    };
+    
+    let params_map: HashMap<String, serde_json::Value> = serde_json::from_value(parameters)
+        .map_err(|e| format!("Invalid parameters: {}", e))?;
+    
+    let mut dsif = state.dsif.lock().map_err(|e| format!("Failed to lock DSIF: {}", e))?;
+    let decision = dsif.execute_pipeline(&input, action_type_enum, &target, params_map).await?;
+    
+    Ok(serde_json::json!({
+        "success": true,
+        "decision": decision
+    }))
+}
+
+/// Get DSIF audit trail
+#[tauri::command]
+fn cmd_dsif_get_audit_trail(
+    state: tauri::State<'_, AppState>,
+) -> Result<serde_json::Value, String> {
+    let dsif = state.dsif.lock().map_err(|e| format!("Failed to lock DSIF: {}", e))?;
+    let trail = dsif.get_audit_trail();
+    Ok(serde_json::json!(trail))
+}
+
+/// Get DSIF agents
+#[tauri::command]
+fn cmd_dsif_get_agents(
+    state: tauri::State<'_, AppState>,
+) -> Result<serde_json::Value, String> {
+    let dsif = state.dsif.lock().map_err(|e| format!("Failed to lock DSIF: {}", e))?;
+    let agents = dsif.get_agents();
+    Ok(serde_json::json!(agents))
+}
+
+/// Add invariant to DSIF
+#[tauri::command]
+fn cmd_dsif_add_invariant(
+    state: tauri::State<'_, AppState>,
+    id: String,
+    name: String,
+    property: String,
+    domain: String,
+) -> Result<serde_json::Value, String> {
+    let invariant = dsif::Invariant {
+        id,
+        name,
+        property,
+        domain,
+    };
+    
+    let mut dsif = state.dsif.lock().map_err(|e| format!("Failed to lock DSIF: {}", e))?;
+    dsif.add_invariant(invariant);
+    
+    Ok(serde_json::json!({
+        "success": true,
+        "message": "Invariant added"
+    }))
+}
+
+/// Add item to DSIF allowlist
+#[tauri::command]
+fn cmd_dsif_add_to_allowlist(
+    state: tauri::State<'_, AppState>,
+    item: String,
+) -> Result<serde_json::Value, String> {
+    let mut dsif = state.dsif.lock().map_err(|e| format!("Failed to lock DSIF: {}", e))?;
+    dsif.add_to_allowlist(item);
+    
+    Ok(serde_json::json!({
+        "success": true,
+        "message": "Item added to allowlist"
+    }))
+}
+
+/// Add item to DSIF denylist
+#[tauri::command]
+fn cmd_dsif_add_to_denylist(
+    state: tauri::State<'_, AppState>,
+    item: String,
+) -> Result<serde_json::Value, String> {
+    let mut dsif = state.dsif.lock().map_err(|e| format!("Failed to lock DSIF: {}", e))?;
+    dsif.add_to_denylist(item);
+    
+    Ok(serde_json::json!({
+        "success": true,
+        "message": "Item added to denylist"
+    }))
 }
 
