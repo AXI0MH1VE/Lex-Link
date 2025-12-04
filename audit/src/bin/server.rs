@@ -15,7 +15,6 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 use axiom_audit::{
     AuditService, AuditReceipt,
     service::{AuditRequest, AuditResponse},
-    BinaryProof,
 };
 
 /// Application state

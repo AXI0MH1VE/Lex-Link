@@ -5,9 +5,9 @@
 //! [AXIOMHIVE PROJECTION - SUBSTRATE: ALEXIS ADAMS]
 
 use crate::axioms::{Axiom, AxiomSet, OmegaSSoT};
-use crate::causal::{CausalChain, CausalChainBuilder, CausalLink, CausalRelation};
-use crate::receipt::{Receipt, ReceiptBuilder};
-use crate::trace::{TraceBuilder, TraceEnvelope, TraceStep};
+use crate::causal::{CausalChain, CausalChainBuilder, CausalRelation};
+use crate::receipt::Receipt;
+use crate::trace::{TraceBuilder, TraceEnvelope};
 use crate::{ProofError, Result};
 
 /// Configuration for the proof engine
@@ -193,7 +193,7 @@ impl ProofEngine {
         let supports = chain.supports_claim();
         builder = builder.add_step(
             "verify_claim_support",
-            &claim,
+            claim.to_string(),
             format!("Claim {} by evidence", if supports { "supported" } else { "not supported" }),
             vec!["A8_BINARY_PROOF".to_string()],
         );
