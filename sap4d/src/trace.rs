@@ -169,7 +169,7 @@ impl TraceEnvelope {
             hasher.update(step.step_hash.as_bytes());
         }
         
-        hasher.update(&[self.contradiction_check as u8]);
+        hasher.update([self.contradiction_check as u8]);
         hasher.update(self.created_at.to_rfc3339().as_bytes());
         hasher.update(self.substrate.as_bytes());
         hasher.update(self.projection.as_bytes());
@@ -205,7 +205,7 @@ impl TraceEnvelope {
             hasher.update(step.step_hash.as_bytes());
         }
         
-        hasher.update(&[self.contradiction_check as u8]);
+        hasher.update([self.contradiction_check as u8]);
         hasher.update(self.created_at.to_rfc3339().as_bytes());
         hasher.update(self.substrate.as_bytes());
         hasher.update(self.projection.as_bytes());

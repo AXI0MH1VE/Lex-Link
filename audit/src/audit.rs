@@ -109,7 +109,7 @@ impl AuditResult {
             hasher.update(a.as_bytes());
         }
         
-        hasher.update(&[c_zero as u8]);
+        hasher.update([c_zero as u8]);
         hasher.update(timestamp.to_rfc3339().as_bytes());
         
         hex::encode(hasher.finalize())

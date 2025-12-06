@@ -111,7 +111,7 @@ fn compute_hash(claim: &str, evidence: &[String], c_zero: bool, timestamp: &str)
     for e in evidence {
         hasher.update(e.as_bytes());
     }
-    hasher.update(&[c_zero as u8]);
+    hasher.update([c_zero as u8]);
     hasher.update(timestamp.as_bytes());
     hex::encode(hasher.finalize())
 }

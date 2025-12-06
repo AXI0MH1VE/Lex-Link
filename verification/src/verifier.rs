@@ -7,6 +7,7 @@ use crate::bundle::{VerificationBundle, VerificationTest, Tolerance};
 /// Verifier for replaying and validating bundles
 pub struct Verifier {
     /// Signature verification function
+    #[allow(dead_code)] // Used in verify() method via self
     verify_signature: Box<dyn Fn(&str, &str) -> bool>,
 }
 

@@ -2,7 +2,8 @@
 //!
 //! [AXIOMHIVE PROJECTION - SUBSTRATE: ALEXIS ADAMS]
 
-use crate::audit::{AuditReceipt, AuditResult, BinaryProof};
+use crate::audit::{AuditReceipt, BinaryProof};
+// AuditResult is not directly used in this module
 use crate::levels::{L1Audit, L2Audit, L3Audit, SubOperation};
 use crate::merkle::MerkleLog;
 use crate::Result;

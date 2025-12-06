@@ -111,6 +111,7 @@ impl Severity {
 pub struct HunterKiller {
     patterns: RegexSet,
     critical_patterns: RegexSet,
+    #[allow(dead_code)] // Reserved for future pattern introspection/debugging
     all_pattern_strings: Vec<String>,
 }
 
@@ -148,7 +149,7 @@ impl HunterKiller {
         let mut detections = Vec::new();
         
         // Check critical patterns first
-        for (i, idx) in self.critical_patterns.matches(content).iter().enumerate() {
+        for idx in self.critical_patterns.matches(content).iter() {
             detections.push(Detection {
                 pattern_index: INJECTION_PATTERNS.len() + idx,
                 pattern: CRITICAL_PATTERNS[idx].to_string(),
@@ -335,14 +336,12 @@ fn main() -> ExitCode {
                         .collect::<Vec<_>>()
                 });
                 println!("{}", serde_json::to_string_pretty(&output).unwrap());
+            } else if detections.is_empty() {
+                println!("✓ Content is clean");
             } else {
-                if detections.is_empty() {
-                    println!("✓ Content is clean");
-                } else {
-                    println!("✗ {} injection pattern(s) detected:", detections.len());
-                    for det in &detections {
-                        println!("  - [{}] Pattern matched", det.severity.as_str());
-                    }
+                println!("✗ {} injection pattern(s) detected:", detections.len());
+                for det in &detections {
+                    println!("  - [{}] Pattern matched", det.severity.as_str());
                 }
             }
             
@@ -376,18 +375,16 @@ fn main() -> ExitCode {
                     }).collect::<Vec<_>>()
                 });
                 println!("{}", serde_json::to_string_pretty(&output).unwrap());
+            } else if detections.is_empty() {
+                println!("✓ File is clean: {}", path);
             } else {
-                if detections.is_empty() {
-                    println!("✓ File is clean: {}", path);
-                } else {
-                    println!("✗ {} detection(s) in {}:", detections.len(), path);
-                    for det in &detections {
-                        println!(
-                            "  Line {}: [{}]",
-                            det.line_number.unwrap_or(0),
-                            det.severity.as_str()
-                        );
-                    }
+                println!("✗ {} detection(s) in {}:", detections.len(), path);
+                for det in &detections {
+                    println!(
+                        "  Line {}: [{}]",
+                        det.line_number.unwrap_or(0),
+                        det.severity.as_str()
+                    );
                 }
             }
             

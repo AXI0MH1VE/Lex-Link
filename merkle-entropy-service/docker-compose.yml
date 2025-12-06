@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  merkle_entropy_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mes_app
+    ports:
+      # Map host port 5000 to internal Gunicorn port 8000
+      - "5000:8000"
+    volumes:
+      # Mount application code for development convenience (optional, useful for debugging)
+      - ./mes:/app/mes
+    # Command defined in Dockerfile is used here
+

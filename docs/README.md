@@ -83,18 +83,32 @@ Release notes: **[See the latest release notes](RELEASE_NOTES.md)**
    - Regulatory alignment (EU AI Act, aviation standards, DO-178C)
    - Complete technical stack and forensic replay example
 
+12. **[The Glass Cannon Paradox: Why Current AI is Dangerous](glass-cannon-paradox-and-axiom-hive.md)**
+   - Analysis of vulnerabilities in probabilistic AI (Comet, Perplexity)
+   - Indirect Prompt Injection (IPI) and CometJacking attack vectors
+   - How Axiom Hive's deterministic architecture mitigates these risks
+   - Project Aegis perimeter defense and input hygiene
+   - Pointer Logic and Sovereign Attribution
+   - Immutable audit trails and cryptographic receipts
+
 ### API Reference
 
 - **[Verification Portal API](../portal/openapi.yaml)**
   - OpenAPI 3.0 specification
   - Binary proof endpoints
 
+### Comparative Analysis
+
+13. **[Axiom Hive vs Grok: Safety-First Architectures](axiom-hive-vs-grok-comparison.md)**
+   - Deterministic vs. probabilistic architectures for high-stakes automation
+   - Risk taxonomy and safety case analysis
+   - Deployment guidance and use case recommendations
+
 ### Additional Resources
 
 - [SECURITY.md](../SECURITY.md) - Security policies and threat model
 - [README.md](../README.md) - Project overview
- - [README.md](../README.md) - Project overview
- - [RELEASE_NOTES.md](RELEASE_NOTES.md) - Summary of recent public-release changes
+- [RELEASE_NOTES.md](RELEASE_NOTES.md) - Summary of recent public-release changes
 
 ## Quick Reference
 

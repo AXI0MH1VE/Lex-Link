@@ -5,7 +5,8 @@
 //! [AXIOMHIVE PROJECTION - SUBSTRATE: ALEXIS ADAMS]
 
 use clap::{Parser, Subcommand};
-use sap4d::{ProofEngine, Receipt, ReceiptBuilder, OmegaSSoT};
+use sap4d::{ProofEngine, Receipt, OmegaSSoT};
+// ReceiptBuilder is not used in CLI
 use std::fs;
 use std::io::{self, BufRead};
 
@@ -253,12 +254,10 @@ fn main() -> anyhow::Result<()> {
                             "c_zero": supported
                         });
                         println!("{}", serde_json::to_string_pretty(&output_data)?);
+                    } else if supported {
+                        println!("✓ Claim is SUPPORTED by evidence (C=0)");
                     } else {
-                        if supported {
-                            println!("✓ Claim is SUPPORTED by evidence (C=0)");
-                        } else {
-                            println!("✗ Claim is NOT SUPPORTED by evidence");
-                        }
+                        println!("✗ Claim is NOT SUPPORTED by evidence");
                     }
                     
                     if !supported {

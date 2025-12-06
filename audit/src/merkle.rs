@@ -107,14 +107,16 @@ impl MerkleTree {
             return None;
         }
         
-        let mut proof_hashes = Vec::new();
-        let mut proof_positions = Vec::new();
+        let proof_hashes: Vec<String> = Vec::new();
+        let proof_positions: Vec<u8> = Vec::new();
         
         let leaf_hash = &self.leaves[index];
         
         // Simple proof generation for binary tree
-        let mut current_index = index;
-        let mut level_size = self.leaves.len().next_power_of_two();
+        // TODO: Implement full tree traversal for proof generation
+        // Reserved for future implementation:
+        let _current_index = index;
+        let _level_size = self.leaves.len().next_power_of_two();
         
         // We need to traverse and collect sibling hashes
         // This is a simplified version - full implementation would traverse the tree
@@ -134,7 +136,8 @@ impl MerkleTree {
         }
         
         // Rebuild and compare root hash
-        let rebuilt = Self::from_data(
+        // TODO: Store original data for proper verification
+        let _rebuilt = Self::from_data(
             &self.leaves.iter()
                 .enumerate()
                 .map(|(i, _)| format!("leaf_{}", i))

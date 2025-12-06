@@ -42,6 +42,7 @@ impl AuditLevel {
 /// L1 Audit: Claim→Outcome proof under Ω-SSOT
 pub struct L1Audit {
     ssot: OmegaSSoT,
+    #[allow(dead_code)] // Reserved for future proof verification logic
     engine: ProofEngine,
 }
 
@@ -142,6 +143,7 @@ impl Default for L1Audit {
 
 /// L2 Audit: Mapping consistency proof (C=0)
 pub struct L2Audit {
+    #[allow(dead_code)] // Reserved for future proof verification logic
     engine: ProofEngine,
 }
 

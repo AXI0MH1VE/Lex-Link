@@ -70,7 +70,7 @@ impl SeedControl {
     }
     
     /// Get next deterministic value
-    pub fn next(&mut self) -> u64 {
+    pub fn next_value(&mut self) -> u64 {
         // Simple LCG for deterministic sequence
         // In production, use a proper PRNG with state capture
         self.prng_state = self.prng_state.wrapping_mul(1103515245).wrapping_add(12345);
@@ -101,13 +101,13 @@ mod tests {
     fn test_seed_control() {
         let mut control = SeedControl::new(42);
         
-        let v1 = control.next();
-        let v2 = control.next();
+        let v1 = control.next_value();
+        let v2 = control.next_value();
         
         // Reset and replay
         control.reset();
-        assert_eq!(control.next(), v1);
-        assert_eq!(control.next(), v2);
+        assert_eq!(control.next_value(), v1);
+        assert_eq!(control.next_value(), v2);
     }
     
     #[test]

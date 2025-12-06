@@ -4,7 +4,8 @@
 
 use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
-use crate::{attestation::Attestation, provenance::Provenance};
+use crate::provenance::Provenance;
+use crate::attestation::Attestation;
 
 /// Verification Bundle - Enables independent replay and validation
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -198,7 +199,7 @@ impl VerificationBundle {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::provenance::{DataProvenance, ModelMetadata, EnvironmentManifest};
+    use crate::provenance::{ModelMetadata, EnvironmentManifest};
     
     #[test]
     fn test_bundle_content_address() {
