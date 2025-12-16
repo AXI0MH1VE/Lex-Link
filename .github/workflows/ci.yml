@@ -5,6 +5,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-action@stable
-      - run: cargo build --release --workspace
+    - uses: dtolnay/rust-toolchain@stable      - run: cargo build --release --workspace
       - run: cargo test --workspace
